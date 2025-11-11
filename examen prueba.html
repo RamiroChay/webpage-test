@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examen Interactivo</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      width: 90%;
+      margin: 20px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 10px 0;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .timer {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .timer.warning {
+      color: #ff6b6b;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.3);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 15px;
+    }
+
+    .progress-fill {
+      background: white;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .question-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-left: 4px solid #667eea;
+    }
+
+    .question-number {
+      color: #667eea;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #2d3748;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option:hover {
+      border-color: #667eea;
+      background: #f7fafc;
+      transform: translateX(5px);
+    }
+
+    .option.selected {
+      border-color: #667eea;
+      background: #edf2f7;
+      font-weight: 600;
+    }
+
+    .option-letter {
+      background: #667eea;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .option.selected .option-letter {
+      background: #764ba2;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #2d3748;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e0;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .results {
+      text-align: center;
+      padding: 40px 30px;
+    }
+
+    .score {
+      font-size: 72px;
+      font-weight: 700;
+      color: #667eea;
+      margin: 20px 0;
+    }
+
+    .results h2 {
+      color: #2d3748;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .results p {
+      color: #718096;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .restart-btn {
+      margin-top: 30px;
+      padding: 15px 40px;
+      font-size: 18px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <div class="header">
+    <h1 id="exam-title">Examen de Conocimientos</h1>
+    <div class="timer" id="timer">
+     10:00
+    </div>
+    <div class="progress-bar">
+     <div class="progress-fill" id="progress"></div>
+    </div>
+   </div>
+   <div class="content" id="exam-content">
+    <div class="question-card">
+     <div class="question-number" id="question-number">
+      Pregunta 1 de 25
+     </div>
+     <div class="question-text" id="question-text"></div>
+     <div class="options" id="options"></div>
+    </div>
+    <div class="navigation"><button class="btn btn-secondary" id="prev-btn" onclick="previousQuestion()">← Anterior</button> <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Siguiente →</button>
+    </div>
+   </div>
+   <div class="results hidden" id="results">
+    <h2>¡Examen Completado!</h2>
+    <div class="score" id="final-score">
+     0/25
+    </div>
+    <p id="percentage"></p>
+    <p id="time-taken"></p><button class="btn btn-primary restart-btn" onclick="restartExam()">Reiniciar Examen</button>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      exam_title: "Examen de Conocimientos",
+      time_limit: "10",
+      primary_color: "#667eea",
+      secondary_color: "#764ba2",
+      background_color: "#ffffff",
+      text_color: "#2d3748",
+      accent_color: "#f8f9fa"
+    };
+
+        const questions = [
+            // --- Sección 1: Completar la oración (12 preguntas) ---
+
+            // Nivel A1
+            { 
+                q: "1. I have ___ apple and ___ banana for breakfast.", 
+                options: ["a / the", "an / a", "the / an", "— / a"], 
+                correct: 1, 
+                level: "A1" 
+            },
+            { 
+                q: "2. My sister is sitting ___ the chair.", 
+                options: ["in", "on", "at", "to"], 
+                correct: 1, 
+                level: "A1" 
+            },
+
+            // Nivel A2
+            { 
+                q: "3. There are ___ books on the table.", 
+                options: ["much", "a few", "little", "any"], 
+                correct: 1, 
+                level: "A2" 
+            },
+            { 
+                q: "4. I like coffee, ___ I don’t like tea.", 
+                options: ["or", "but", "because", "so"], 
+                correct: 1, 
+                level: "A2" 
+            },
+            { 
+                q: "5. He usually ___ to school by bus.", 
+                options: ["go", "goes", "is going", "gone"], 
+                correct: 1, 
+                level: "A2" 
+            },
+
+            // Nivel B1
+            { 
+                q: "6. We didn’t go out last night because it ___ heavily.", 
+                options: ["rains", "rained", "was raining", "has rained"], 
+                correct: 2, 
+                level: "B1" 
+            },
+            { 
+                q: "7. I’ll call you ___ I arrive at the station.", 
+                options: ["until", "after", "when", "before"], 
+                correct: 2, 
+                level: "B1" 
+            },
+            { 
+                q: "8. The teacher gave us ___ information about the project.", 
+                options: ["an", "many", "a lot of", "few"], 
+                correct: 2, 
+                level: "B1" 
+            },
+            { 
+                q: "9. She is the person ___ helped me with my homework.", 
+                options: ["who", "which", "what", "where"], 
+                correct: 0, 
+                level: "B1" 
+            },
+
+            // Nivel B2
+            { 
+                q: "10. If I ___ known about the meeting, I would have attended.", 
+                options: ["had", "have", "would have", "has"], 
+                correct: 0, 
+                level: "B2" 
+            },
+            { 
+                q: "11. The report was completed ___ the deadline, which surprised everyone.", 
+                options: ["despite", "although", "in spite of", "ahead of"], 
+                correct: 3, 
+                level: "B2" 
+            },
+
+            // Nivel C1
+            { 
+                q: "12. Not only ___ the task on time, but she also improved the results.", 
+                options: ["she finished", "did she finish", "she finishes", "was she finishing"], 
+                correct: 1, 
+                level: "C1" 
+            },
+
+                    // --- Sección 2: Encontrar y corregir el error (13–25) ---
+
+            // Nivel A1
+            { 
+                q: "13. He have two brothers and one sister.", 
+                options: ["He", "have", "two brothers", "and one sister"], 
+                correct: 1, 
+                level: "A1" 
+            },
+
+            // Nivel A2
+            { 
+                q: "14. There isn’t some milk in the fridge.", 
+                options: ["There", "isn’t", "some", "in the fridge"], 
+                correct: 2, 
+                level: "A2" 
+            },
+            { 
+                q: "15. She can to play the piano very well.", 
+                options: ["can", "to play", "the piano", "very well"], 
+                correct: 1, 
+                level: "A2" 
+            },
+        
+
+            // Nivel B1
+            { 
+                q: "16. We enjoyed the party, although it was very late.", 
+                options: ["We enjoyed", "the party", "although", "No error"], 
+                correct: 3, 
+                level: "B1" 
+            },
+            { 
+                q: "17. She said me that she was tired.", 
+                options: ["She", "said me", "that", "was tired"], 
+                correct: 1, 
+                level: "B1" 
+            },
+            { 
+                q: "18. I didn’t went to the cinema last weekend.", 
+                options: ["I", "didn’t went", "to the cinema", "last weekend"], 
+                correct: 1, 
+                level: "B1" 
+            },
+
+            // Nivel B2
+            { 
+                q: "19. If he will come early, we can start the meeting.", 
+                options: ["If", "he will come", "we can start", "the meeting"], 
+                correct: 1, 
+                level: "B2" 
+            },
+            { 
+                q: "20. Neither the manager nor the employees was satisfied.", 
+                options: ["Neither", "the manager", "nor the employees", "was satisfied"], 
+                correct: 3, 
+                level: "B2" 
+            },
+            { 
+                q: "21. Having finish the exam, they all felt relieved.", 
+                options: ["Having", "finish", "the exam", "felt relieved"], 
+                correct: 1, 
+                level: "B2" 
+            },
+
+            // Nivel C1
+            { 
+                q: "22. The book, which I bought it yesterday, is already missing.", 
+                options: ["The book", "which I bought it", "yesterday", "is already missing"], 
+                correct: 1, 
+                level: "C1" 
+            },
+            { 
+                q: "23. Hardly I had arrived when the train left.", 
+                options: ["Hardly", "I had arrived", "when", "the train left"], 
+                correct: 1, 
+                level: "C1" 
+            },
+
+            // Nivel C2
+            { 
+                q: "24. Were it not for his advice, we wouldn’t have succeeded.", 
+                options: ["Were", "it not for", "advice", "wouldn’t have succeeded"], 
+                correct: 0, 
+                level: "C2" 
+            },
+            { 
+                q: "25. No sooner had she spoken that everyone started to laugh.", 
+                options: ["No sooner", "had she spoken", "that", "everyone started"], 
+                correct: 2, 
+                level: "C2" 
+            }
+        ];
+
+
+    let currentQuestion = 0;
+    let answers = new Array(25).fill(null);
+    let timeLeft = 600;
+    let timerInterval;
+    let startTime;
+
+    function renderQuestion() {
+      const question = questions[currentQuestion];
+      document.getElementById('question-number').textContent = `Pregunta ${currentQuestion + 1} de 25`;
+      document.getElementById('question-text').textContent = question.q;
+      
+      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+      
+      question.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option' + (answers[currentQuestion] === index ? ' selected' : '');
+        optionDiv.onclick = () => selectOption(index);
+        
+        const letter = String.fromCharCode(65 + index);
+        optionDiv.innerHTML = `
+          <div class="option-letter">${letter}</div>
+          <div>${option}</div>
+        `;
+        
+        optionsContainer.appendChild(optionDiv);
+      });
+      
+      document.getElementById('prev-btn').disabled = currentQuestion === 0;
+      document.getElementById('next-btn').textContent = currentQuestion === 24 ? 'Finalizar' : 'Siguiente →';
+      
+      updateProgress();
+    }
+
+    function selectOption(index) {
+      answers[currentQuestion] = index;
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < 24) {
+        currentQuestion++;
+        renderQuestion();
+      } else {
+        finishExam();
+      }
+    }
+
+    function previousQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    }
+
+    function updateProgress() {
+      const answered = answers.filter(a => a !== null).length;
+      const percentage = (answered / 25) * 100;
+      document.getElementById('progress').style.width = percentage + '%';
+    }
+
+    function updateTimer() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      const timerElement = document.getElementById('timer');
+      timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      
+      if (timeLeft <= 60) {
+        timerElement.classList.add('warning');
+      }
+      
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        finishExam();
+      }
+      
+      timeLeft--;
+    }
+
+    function finishExam() {
+        clearInterval(timerInterval);
+
+        let score = 0;
+        answers.forEach((answer, index) => {
+            if (answer === questions[index].correct) {
+            score++;
+            }
+        });
+
+        // Cálculos de resultados
+        const percentage100 = ((score / 25) * 100).toFixed(1);
+        const percentage6 = ((score / 25) * 6).toFixed(2);
+
+        // Determinar nivel CEFR
+        let cefrLevel = "";
+        if (percentage6 < 2.0) cefrLevel = "A1";
+        else if (percentage6 < 2.5) cefrLevel = "A2";
+        else if (percentage6 < 3.5) cefrLevel = "B1";
+        else if (percentage6 < 4.5) cefrLevel = "B2";
+        else if (percentage6 < 5.5) cefrLevel = "C1";
+        else cefrLevel = "C2";
+
+        // Calcular tiempo total
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const minutesTaken = Math.floor(timeTaken / 60);
+        const secondsTaken = timeTaken % 60;
+
+        // Construcción de tabla de resultados
+        const resultsTable = `
+            <table style="width:100%; border-collapse:collapse; margin-top:25px;">
+            <thead>
+                <tr style="background:#667eea; color:white;">
+                <th style="padding:10px; border:1px solid #ccc;">Correct Answers</th>
+                <th style="padding:10px; border:1px solid #ccc;">% (out of 100)</th>
+                <th style="padding:10px; border:1px solid #ccc;">Score (out of 6)</th>
+                <th style="padding:10px; border:1px solid #ccc;">CEFR Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center; font-weight:600;">
+                <td style="padding:10px; border:1px solid #ccc;">${score}/25</td>
+                <td style="padding:10px; border:1px solid #ccc;">${percentage100}%</td>
+                <td style="padding:10px; border:1px solid #ccc;">${percentage6}</td>
+                <td style="padding:10px; border:1px solid #ccc;">${cefrLevel}</td>
+                </tr>
+            </tbody>
+            </table>
+        `;
+
+        // Mostrar resultados
+        document.getElementById("exam-content").classList.add("hidden");
+        document.getElementById("results").classList.remove("hidden");
+        document.getElementById("results").innerHTML = `
+            <h2>Final Results</h2>
+            <div class="score">${score}/25</div>
+            ${resultsTable}
+            <p id="time-taken">Time: ${minutesTaken}:${secondsTaken
+            .toString()
+            .padStart(2, "0")}</p>
+            <button class="btn btn-primary restart-btn" onclick="restartExam()">Restart Exam</button>
+        `;
+        }
+
+
+    function restartExam() {
+      currentQuestion = 0;
+      answers = new Array(25).fill(null);
+      timeLeft = parseInt(window.elementSdk?.config?.time_limit || defaultConfig.time_limit) * 60;
+      startTime = Date.now();
+      
+      document.getElementById('exam-content').classList.remove('hidden');
+      document.getElementById('results').classList.add('hidden');
+      document.getElementById('timer').classList.remove('warning');
+      
+      renderQuestion();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+      updateTimer();
+    }
+
+    async function onConfigChange(config) {
+      const examTitle = config.exam_title || defaultConfig.exam_title;
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      
+      document.getElementById('exam-title').textContent = examTitle;
+      
+      const header = document.querySelector('.header');
+      header.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+      
+      document.body.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+      
+      const container = document.querySelector('.container');
+      container.style.background = backgroundColor;
+      
+      const questionTexts = document.querySelectorAll('.question-text, .results h2');
+      questionTexts.forEach(el => el.style.color = textColor);
+      
+      const buttons = document.querySelectorAll('.btn-primary');
+      buttons.forEach(btn => {
+        btn.style.background = primaryColor;
+      });
+      
+      const optionLetters = document.querySelectorAll('.option-letter');
+      optionLetters.forEach(letter => {
+        letter.style.background = primaryColor;
+      });
+      
+      const selectedOptions = document.querySelectorAll('.option.selected .option-letter');
+      selectedOptions.forEach(letter => {
+        letter.style.background = secondaryColor;
+      });
+      
+      const score = document.getElementById('final-score');
+      if (score) {
+        score.style.color = primaryColor;
+      }
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["exam_title", config.exam_title || defaultConfig.exam_title],
+          ["time_limit", config.time_limit || defaultConfig.time_limit]
+        ])
+      });
+    }
+
+    startTime = Date.now();
+    renderQuestion();
+    timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ca227485e5a4eb',t:'MTc2MjgyNTc4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
