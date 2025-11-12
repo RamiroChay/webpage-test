@@ -267,185 +267,209 @@
       text_color: "#2d3748",
       accent_color: "#f8f9fa"
     };
+    const questions = [
+        // --- Section 1: Complete the sentence (1–12) ---
 
-        const questions = [
-            // --- Sección 1: Completar la oración (12 preguntas) ---
+        // Level A1
+        { 
+            q: "1. I have ___ apple and ___ banana for breakfast.", 
+            options: ["a / the", "an / a", "the / an", "— / a"], 
+            correct: 1, 
+            level: "A1",
+            topic: "Articles (a, an, the)"
+        },
+        { 
+            q: "2. My sister is sitting ___ the chair.", 
+            options: ["in", "on", "at", "to"], 
+            correct: 1, 
+            level: "A1",
+            topic: "Prepositions of place"
+        },
 
-            // Nivel A1
-            { 
-                q: "1. I have ___ apple and ___ banana for breakfast.", 
-                options: ["a / the", "an / a", "the / an", "— / a"], 
-                correct: 1, 
-                level: "A1" 
-            },
-            { 
-                q: "2. My sister is sitting ___ the chair.", 
-                options: ["in", "on", "at", "to"], 
-                correct: 1, 
-                level: "A1" 
-            },
+        // Level A2
+        { 
+            q: "3. There are ___ books on the table.", 
+            options: ["much", "a few", "little", "any"], 
+            correct: 1, 
+            level: "A2",
+            topic: "Quantifiers (much, many, few, little)"
+        },
+        { 
+            q: "4. I like coffee, ___ I don’t like tea.", 
+            options: ["or", "but", "because", "so"], 
+            correct: 1, 
+            level: "A2",
+            topic: "Conjunctions (contrast and cause)"
+        },
+        { 
+            q: "5. He usually ___ to school by bus.", 
+            options: ["go", "goes", "is going", "gone"], 
+            correct: 1, 
+            level: "A2",
+            topic: "Present simple – third person singular"
+        },
 
-            // Nivel A2
-            { 
-                q: "3. There are ___ books on the table.", 
-                options: ["much", "a few", "little", "any"], 
-                correct: 1, 
-                level: "A2" 
-            },
-            { 
-                q: "4. I like coffee, ___ I don’t like tea.", 
-                options: ["or", "but", "because", "so"], 
-                correct: 1, 
-                level: "A2" 
-            },
-            { 
-                q: "5. He usually ___ to school by bus.", 
-                options: ["go", "goes", "is going", "gone"], 
-                correct: 1, 
-                level: "A2" 
-            },
+        // Level B1
+        { 
+            q: "6. We didn’t go out last night because it ___ heavily.", 
+            options: ["rains", "rained", "was raining", "has rained"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Past continuous vs past simple"
+        },
+        { 
+            q: "7. I’ll call you ___ I arrive at the station.", 
+            options: ["until", "after", "when", "before"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Time conjunctions (when, before, after)"
+        },
+        { 
+            q: "8. The teacher gave us ___ information about the project.", 
+            options: ["an", "many", "a lot of", "few"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Expressions of quantity"
+        },
+        { 
+            q: "9. She is the person ___ helped me with my homework.", 
+            options: ["who", "which", "what", "where"], 
+            correct: 0, 
+            level: "B1",
+            topic: "Relative clauses (who, which, that)"
+        },
 
-            // Nivel B1
-            { 
-                q: "6. We didn’t go out last night because it ___ heavily.", 
-                options: ["rains", "rained", "was raining", "has rained"], 
-                correct: 2, 
-                level: "B1" 
-            },
-            { 
-                q: "7. I’ll call you ___ I arrive at the station.", 
-                options: ["until", "after", "when", "before"], 
-                correct: 2, 
-                level: "B1" 
-            },
-            { 
-                q: "8. The teacher gave us ___ information about the project.", 
-                options: ["an", "many", "a lot of", "few"], 
-                correct: 2, 
-                level: "B1" 
-            },
-            { 
-                q: "9. She is the person ___ helped me with my homework.", 
-                options: ["who", "which", "what", "where"], 
-                correct: 0, 
-                level: "B1" 
-            },
+        // Level B2
+        { 
+            q: "10. If I ___ known about the meeting, I would have attended.", 
+            options: ["had", "have", "would have", "has"], 
+            correct: 0, 
+            level: "B2",
+            topic: "Third conditional"
+        },
+        { 
+            q: "11. The report was completed ___ the deadline, which surprised everyone.", 
+            options: ["despite", "although", "in spite of", "ahead of"], 
+            correct: 3, 
+            level: "B2",
+            topic: "Prepositions and expressions of time"
+        },
 
-            // Nivel B2
-            { 
-                q: "10. If I ___ known about the meeting, I would have attended.", 
-                options: ["had", "have", "would have", "has"], 
-                correct: 0, 
-                level: "B2" 
-            },
-            { 
-                q: "11. The report was completed ___ the deadline, which surprised everyone.", 
-                options: ["despite", "although", "in spite of", "ahead of"], 
-                correct: 3, 
-                level: "B2" 
-            },
+        // Level C1
+        { 
+            q: "12. Not only ___ the task on time, but she also improved the results.", 
+            options: ["she finished", "did she finish", "she finishes", "was she finishing"], 
+            correct: 1, 
+            level: "C1",
+            topic: "Inversion with 'Not only... but also'"
+        },
 
-            // Nivel C1
-            { 
-                q: "12. Not only ___ the task on time, but she also improved the results.", 
-                options: ["she finished", "did she finish", "she finishes", "was she finishing"], 
-                correct: 1, 
-                level: "C1" 
-            },
+        // --- Section 2: Find and correct the error (13–25) ---
 
-                    // --- Sección 2: Encontrar y corregir el error (13–25) ---
+        // Level A1
+        { 
+            q: "13. He have two brothers and one sister.", 
+            options: ["He", "have", "two brothers", "and one sister"], 
+            correct: 1, 
+            level: "A1",
+            topic: "Subject–verb agreement"
+        },
 
-            // Nivel A1
-            { 
-                q: "13. He have two brothers and one sister.", 
-                options: ["He", "have", "two brothers", "and one sister"], 
-                correct: 1, 
-                level: "A1" 
-            },
+        // Level A2
+        { 
+            q: "14. There isn’t some milk in the fridge.", 
+            options: ["There", "isn’t", "some", "in the fridge"], 
+            correct: 2, 
+            level: "A2",
+            topic: "Quantifiers in negative sentences (any/some)"
+        },
+        { 
+            q: "15. She can to play the piano very well.", 
+            options: ["can", "to play", "the piano", "very well"], 
+            correct: 1, 
+            level: "A2",
+            topic: "Modal verbs (without 'to')"
+        },
 
-            // Nivel A2
-            { 
-                q: "14. There isn’t some milk in the fridge.", 
-                options: ["There", "isn’t", "some", "in the fridge"], 
-                correct: 2, 
-                level: "A2" 
-            },
-            { 
-                q: "15. She can to play the piano very well.", 
-                options: ["can", "to play", "the piano", "very well"], 
-                correct: 1, 
-                level: "A2" 
-            },
-        
+        // Level B1
+        { 
+            q: "16. We enjoyed the party, although it was very late.", 
+            options: ["We enjoyed", "the party", "although", "No error"], 
+            correct: 3, 
+            level: "B1",
+            topic: "Connectors of contrast (although, though, but)"
+        },
+        { 
+            q: "17. She said me that she was tired.", 
+            options: ["She", "said me", "that", "was tired"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Reporting verbs (say vs tell)"
+        },
+        { 
+            q: "18. I didn’t went to the cinema last weekend.", 
+            options: ["I", "didn’t went", "to the cinema", "last weekend"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Past tense with auxiliary 'did'"
+        },
 
-            // Nivel B1
-            { 
-                q: "16. We enjoyed the party, although it was very late.", 
-                options: ["We enjoyed", "the party", "although", "No error"], 
-                correct: 3, 
-                level: "B1" 
-            },
-            { 
-                q: "17. She said me that she was tired.", 
-                options: ["She", "said me", "that", "was tired"], 
-                correct: 1, 
-                level: "B1" 
-            },
-            { 
-                q: "18. I didn’t went to the cinema last weekend.", 
-                options: ["I", "didn’t went", "to the cinema", "last weekend"], 
-                correct: 1, 
-                level: "B1" 
-            },
+        // Level B2
+        { 
+            q: "19. If he will come early, we can start the meeting.", 
+            options: ["If", "he will come", "we can start", "the meeting"], 
+            correct: 1, 
+            level: "B2",
+            topic: "First conditional (without 'will' in if-clause)"
+        },
+        { 
+            q: "20. Neither the manager nor the employees was satisfied.", 
+            options: ["Neither", "the manager", "nor the employees", "was satisfied"], 
+            correct: 3, 
+            level: "B2",
+            topic: "Agreement in 'neither...nor' structures"
+        },
+        { 
+            q: "21. Having finish the exam, they all felt relieved.", 
+            options: ["Having", "finish", "the exam", "felt relieved"], 
+            correct: 1, 
+            level: "B2",
+            topic: "Perfect participle clauses ('Having finished...')"
+        },
 
-            // Nivel B2
-            { 
-                q: "19. If he will come early, we can start the meeting.", 
-                options: ["If", "he will come", "we can start", "the meeting"], 
-                correct: 1, 
-                level: "B2" 
-            },
-            { 
-                q: "20. Neither the manager nor the employees was satisfied.", 
-                options: ["Neither", "the manager", "nor the employees", "was satisfied"], 
-                correct: 3, 
-                level: "B2" 
-            },
-            { 
-                q: "21. Having finish the exam, they all felt relieved.", 
-                options: ["Having", "finish", "the exam", "felt relieved"], 
-                correct: 1, 
-                level: "B2" 
-            },
+        // Level C1
+        { 
+            q: "22. The book, which I bought it yesterday, is already missing.", 
+            options: ["The book", "which I bought it", "yesterday", "is already missing"], 
+            correct: 1, 
+            level: "C1",
+            topic: "Relative clauses (avoid redundant pronouns)"
+        },
+        { 
+            q: "23. Hardly I had arrived when the train left.", 
+            options: ["Hardly", "I had arrived", "when", "the train left"], 
+            correct: 1, 
+            level: "C1",
+            topic: "Negative inversion ('Hardly had I... when...')"
+        },
 
-            // Nivel C1
-            { 
-                q: "22. The book, which I bought it yesterday, is already missing.", 
-                options: ["The book", "which I bought it", "yesterday", "is already missing"], 
-                correct: 1, 
-                level: "C1" 
-            },
-            { 
-                q: "23. Hardly I had arrived when the train left.", 
-                options: ["Hardly", "I had arrived", "when", "the train left"], 
-                correct: 1, 
-                level: "C1" 
-            },
+        // Level C2
+        { 
+            q: "24. Were it not for his advice, we wouldn’t have succeeded.", 
+            options: ["Were", "it not for", "advice", "wouldn’t have succeeded"], 
+            correct: 0, 
+            level: "C2",
+            topic: "Inverted conditionals ('Were it not for...')"
+        },
+        { 
+            q: "25. No sooner had she spoken that everyone started to laugh.", 
+            options: ["No sooner", "had she spoken", "that", "everyone started"], 
+            correct: 2, 
+            level: "C2",
+            topic: "Inversion with 'No sooner... than...'"
+        }
+    ];
 
-            // Nivel C2
-            { 
-                q: "24. Were it not for his advice, we wouldn’t have succeeded.", 
-                options: ["Were", "it not for", "advice", "wouldn’t have succeeded"], 
-                correct: 0, 
-                level: "C2" 
-            },
-            { 
-                q: "25. No sooner had she spoken that everyone started to laugh.", 
-                options: ["No sooner", "had she spoken", "that", "everyone started"], 
-                correct: 2, 
-                level: "C2" 
-            }
-        ];
 
 
     let currentQuestion = 0;
@@ -528,68 +552,114 @@
     }
 
     function finishExam() {
-        clearInterval(timerInterval);
+      clearInterval(timerInterval);
 
-        let score = 0;
-        answers.forEach((answer, index) => {
-            if (answer === questions[index].correct) {
-            score++;
-            }
-        });
+      let score = 0;
+      let wrongAnswers = [];
 
-        // Cálculos de resultados
-        const percentage100 = ((score / 25) * 100).toFixed(1);
-        const percentage6 = ((score / 25) * 6).toFixed(2);
+      answers.forEach((answer, index) => {
+        if (answer === questions[index].correct) {
+          score++;
+        } else {
+          // Guardar las preguntas incorrectas
+          wrongAnswers.push({
+            number: index + 1,
+            question: questions[index].q,
+            selected: answer !== null ? questions[index].options[answer] : "No answered",
+            correct: questions[index].options[questions[index].correct],
+            topic: questions[index].topic
+          });
+        }
+      });
 
-        // Determinar nivel CEFR
-        let cefrLevel = "";
-        if (percentage6 < 2.0) cefrLevel = "A1";
-        else if (percentage6 < 2.5) cefrLevel = "A2";
-        else if (percentage6 < 3.5) cefrLevel = "B1";
-        else if (percentage6 < 4.5) cefrLevel = "B2";
-        else if (percentage6 < 5.5) cefrLevel = "C1";
-        else cefrLevel = "C2";
+      const percentage100 = ((score / 25) * 100).toFixed(1);
+      const percentage6 = ((score / 25) * 6).toFixed(2);
 
-        // Calcular tiempo total
-        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-        const minutesTaken = Math.floor(timeTaken / 60);
-        const secondsTaken = timeTaken % 60;
+      // Determinar nivel CEFR
+      let cefrLevel = "";
+      if (percentage6 < 2.0) cefrLevel = "A1";
+      else if (percentage6 < 2.5) cefrLevel = "A2";
+      else if (percentage6 < 3.5) cefrLevel = "B1";
+      else if (percentage6 < 4.5) cefrLevel = "B2";
+      else if (percentage6 < 5.5) cefrLevel = "C1";
+      else cefrLevel = "C2";
 
-        // Construcción de tabla de resultados
-        const resultsTable = `
-            <table style="width:100%; border-collapse:collapse; margin-top:25px;">
+      // Calcular tiempo total
+      const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+      const minutesTaken = Math.floor(timeTaken / 60);
+      const secondsTaken = timeTaken % 60;
+
+      // Construcción de tabla general
+      const resultsTable = `
+        <table style="width:100%; border-collapse:collapse; margin-top:25px;">
+          <thead>
+            <tr style="background:#667eea; color:white;">
+              <th style="padding:10px; border:1px solid #ccc;">Correct Answers</th>
+              <th style="padding:10px; border:1px solid #ccc;">% (out of 100)</th>
+              <th style="padding:10px; border:1px solid #ccc;">Score (out of 6)</th>
+              <th style="padding:10px; border:1px solid #ccc;">CEFR Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="text-align:center; font-weight:600;">
+              <td style="padding:10px; border:1px solid #ccc;">${score}/25</td>
+              <td style="padding:10px; border:1px solid #ccc;">${percentage100}%</td>
+              <td style="padding:10px; border:1px solid #ccc;">${percentage6}</td>
+              <td style="padding:10px; border:1px solid #ccc;">${cefrLevel}</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+
+      // Construir el reporte de errores
+      let wrongReport = "";
+      if (wrongAnswers.length > 0) {
+        wrongReport += `
+          <h3 style="margin-top:30px; color:#2d3748;">Errores en tus respuestas</h3>
+          <table style="width:100%; border-collapse:collapse; margin-top:10px; font-size:14px;">
             <thead>
-                <tr style="background:#667eea; color:white;">
-                <th style="padding:10px; border:1px solid #ccc;">Correct Answers</th>
-                <th style="padding:10px; border:1px solid #ccc;">% (out of 100)</th>
-                <th style="padding:10px; border:1px solid #ccc;">Score (out of 6)</th>
-                <th style="padding:10px; border:1px solid #ccc;">CEFR Level</th>
-                </tr>
+              <tr style="background:#f3f4f6;">
+                <th style="border:1px solid #ccc; padding:6px;">#</th>
+                <th style="border:1px solid #ccc; padding:6px;">Pregunta</th>
+                <th style="border:1px solid #ccc; padding:6px;">Tu respuesta</th>
+                <th style="border:1px solid #ccc; padding:6px;">Correcta</th>
+                <th style="border:1px solid #ccc; padding:6px;">topic</th>
+              </tr>
             </thead>
             <tbody>
-                <tr style="text-align:center; font-weight:600;">
-                <td style="padding:10px; border:1px solid #ccc;">${score}/25</td>
-                <td style="padding:10px; border:1px solid #ccc;">${percentage100}%</td>
-                <td style="padding:10px; border:1px solid #ccc;">${percentage6}</td>
-                <td style="padding:10px; border:1px solid #ccc;">${cefrLevel}</td>
-                </tr>
+              ${wrongAnswers
+                .map(
+                  (w) => `
+                  <tr>
+                    <td style="border:1px solid #ccc; padding:6px; text-align:center;">${w.number}</td>
+                    <td style="border:1px solid #ccc; padding:6px;">${w.question}</td>
+                    <td style="border:1px solid #ccc; padding:6px; color:#e53e3e;">${w.selected}</td>
+                    <td style="border:1px solid #ccc; padding:6px; color:#2f855a;">${w.correct}</td>
+                    <td style="border:1px solid #ccc; padding:6px; text-align:center;">${w.topic}</td>
+                  </tr>
+                `
+                )
+                .join("")}
             </tbody>
-            </table>
+          </table>
         `;
+      } else {
+        wrongReport = `<p style="color:#2f855a; margin-top:20px;">¡Excelente! Todas tus respuestas fueron correctas 🎉</p>`;
+      }
 
-        // Mostrar resultados
-        document.getElementById("exam-content").classList.add("hidden");
-        document.getElementById("results").classList.remove("hidden");
-        document.getElementById("results").innerHTML = `
-            <h2>Final Results</h2>
-            <div class="score">${score}/25</div>
-            ${resultsTable}
-            <p id="time-taken">Time: ${minutesTaken}:${secondsTaken
-            .toString()
-            .padStart(2, "0")}</p>
-            <button class="btn btn-primary restart-btn" onclick="restartExam()">Restart Exam</button>
-        `;
-        }
+      // Mostrar resultados
+      document.getElementById("exam-content").classList.add("hidden");
+      document.getElementById("results").classList.remove("hidden");
+      document.getElementById("results").innerHTML = `
+        <h2>Reporte de Resultados</h2>
+        <div class="score">${score}/25</div>
+        ${resultsTable}
+        <p id="time-taken">Tiempo: ${minutesTaken}:${secondsTaken.toString().padStart(2, "0")}</p>
+        <button class="btn btn-primary restart-btn" onclick="restartExam()">Reiniciar Examen</button>
+        ${wrongReport}
+      `;
+    }
+
 
 
     function restartExam() {
