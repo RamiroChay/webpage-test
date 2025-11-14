@@ -267,208 +267,199 @@
       text_color: "#2d3748",
       accent_color: "#f8f9fa"
     };
-        const questions = [
-            // --- Section 1: Complete the sentence (1–12) ---
+    const questions = [
+        // --- Section 1: Complete the sentence (1–12) ---
 
-            // Level A1
-            { 
-                q: "1. She ___ a cat and a dog at home.",
-                options: ["has", "have", "is", "are"],
-                correct: 0,
-                level: "A1",
-                topic: "Verb to have"
-            },
-            { 
-                q: "2. The keys are ___ the table.",
-                options: ["in", "on", "at", "to"],
-                correct: 1,
-                level: "A1",
-                topic: "Prepositions of place"
-            },
+        // Level B2
+        { 
+            q: "1. Had I known about the policy change, I ___ much earlier.", 
+            options: ["would complain", "would have complained", "complained", "had complained"], 
+            correct: 1, 
+            level: "B2",
+            topic: "Third conditional structures"
+        },
+        { 
+            q: "2. The conference was postponed, ___ disappointed many attendees.", 
+            options: ["that", "what", "which", "whose"], 
+            correct: 2, 
+            level: "B2",
+            topic: "Non-defining relative clauses"
+        },
+        { 
+            q: "3. Little ___ that the results would be published so soon.", 
+            options: ["they expected", "did they expect", "they had expected", "had expected they"], 
+            correct: 1, 
+            level: "B2",
+            topic: "Inversion after negative adverbials"
+        },
 
-            // Level A2
-            { 
-                q: "3. There aren’t ___ chairs in the room.",
-                options: ["much", "many", "a little", "some"],
-                correct: 1,
-                level: "A2",
-                topic: "Quantifiers (many/much)"
-            },
-            { 
-                q: "4. I wanted to go out, ___ it started raining.",
-                options: ["and", "but", "so", "because"],
-                correct: 1,
-                level: "A2",
-                topic: "Conjunctions (contrast)"
-            },
-            { 
-                q: "5. She ___ her homework every afternoon.",
-                options: ["do", "does", "did", "doing"],
-                correct: 1,
-                level: "A2",
-                topic: "Present simple – third person singular"
-            },
+        // Level C1
+        { 
+            q: "4. The proposal aims at reducing costs, ___ improving long-term sustainability.", 
+            options: ["as well as", "despite", "whereas", "in place of"], 
+            correct: 0, 
+            level: "C1",
+            topic: "Complex connectors"
+        },
+        { 
+            q: "5. It was not until he explained it again that the students finally ___ the concept.", 
+            options: ["grasp", "had grasped", "grasped", "were grasping"], 
+            correct: 2, 
+            level: "C1",
+            topic: "Cleft structure + past simple completion"
+        },
+        { 
+            q: "6. The company demands that every employee ___ the new security protocol.", 
+            options: ["follows", "follow", "to follow", "will follow"], 
+            correct: 1, 
+            level: "C1",
+            topic: "Subjunctive mood"
+        },
+        { 
+            q: "7. The data suggest a clear trend, yet the underlying cause remains difficult ___ precisely.", 
+            options: ["pinpoint", "to be pinpointed", "pinpointed", "pinpointing"], 
+            correct: 0, 
+            level: "C1",
+            topic: "Verb patterns (lexico-grammatical precision)"
+        },
 
-            // Level B1
-            { 
-                q: "6. While I ___ dinner, the phone rang.",
-                options: ["cook", "was cooking", "cooked", "have cooked"],
-                correct: 1,
-                level: "B1",
-                topic: "Past continuous"
-            },
-            { 
-                q: "7. We’ll leave as soon as he ___ here.",
-                options: ["arrive", "arrives", "will arrive", "is arriving"],
-                correct: 1,
-                level: "B1",
-                topic: "Time conjunctions"
-            },
-            { 
-                q: "8. There is ___ traffic today than usual.",
-                options: ["much", "many", "more", "most"],
-                correct: 2,
-                level: "B1",
-                topic: "Comparatives"
-            },
-            { 
-                q: "9. The woman ___ lives next door is a doctor.",
-                options: ["what", "whose", "who", "which"],
-                correct: 2,
-                level: "B1",
-                topic: "Relative clauses"
-            },
+        // Level C2
+        { 
+            q: "8. ___ the circumstances, the board’s decision was far more reasonable than expected.", 
+            options: ["Viewed regarding", "Viewed in light of", "Viewing under", "Being viewed to"], 
+            correct: 1, 
+            level: "C2",
+            topic: "Advanced participle clauses (C2 collocations)"
+        },
+        { 
+            q: "9. No matter how complex the issue seemed, she handled it with ___ composure.", 
+            options: ["unwavering", "wavering", "unwavered", "unwaveringly"], 
+            correct: 0, 
+            level: "C2",
+            topic: "High-level adjective collocation"
+        },
+        { 
+            q: "10. The committee reached a decision, albeit one that few members fully ___ to.", 
+            options: ["subscribed", "subscribed themselves", "subscribed on", "subscribed in"], 
+            correct: 0, 
+            level: "C2",
+            topic: "Formal phrasal verbs / advanced collocations"
+        },
+        { 
+            q: "11. Only after extensive testing ___ ready for deployment.", 
+            options: ["the system was declared", "was the system declared", "declared the system", "the system declared"], 
+            correct: 1, 
+            level: "C2",
+            topic: "Inversion after 'only after'"
+        },
+        { 
+            q: "12. The findings, far from being conclusive, ___ more questions than answers.", 
+            options: ["have raised", "had risen", "rose", "raised up"], 
+            correct: 0, 
+            level: "C2",
+            topic: "C2 lexicogrammar accuracy"
+        },
 
-            // Level B2
-            { 
-                q: "10. If you ___ earlier, we wouldn’t have missed the train.",
-                options: ["come", "came", "had come", "have come"],
-                correct: 2,
-                level: "B2",
-                topic: "Third conditional"
-            },
-            { 
-                q: "11. The meeting was postponed ___ unexpected technical issues.",
-                options: ["although", "despite", "due to", "however"],
-                correct: 2,
-                level: "B2",
-                topic: "Linkers and cause"
-            },
+        // --- Section 2: Find the error (13–25) ---
 
-            // Level C1
-            { 
-                q: "12. Rarely ___ such an unconvincing argument.",
-                options: ["I heard", "heard I", "have I heard", "I have heard"],
-                correct: 2,
-                level: "C1",
-                topic: "Inversion with adverbs"
-            },
+        // Level B2
+        { 
+            q: "13. The solution was so effective that hardly no issues were reported afterwards.", 
+            options: ["The solution", "so effective", "hardly no", "afterwards"], 
+            correct: 2,
+            level: "B2",
+            topic: "Double negatives (hardly any)"
+        },
+        { 
+            q: "14. She suggested to organize the meeting before the deadline.", 
+            options: ["She suggested", "to organize", "the meeting", "before the deadline"], 
+            correct: 1,
+            level: "B2",
+            topic: "Gerund after suggest (suggest + -ing)"
+        },
+        { 
+            q: "15. The guidelines require that every document is submitted digitally.", 
+            options: ["require", "that", "every document", "is submitted"], 
+            correct: 3,
+            level: "B2",
+            topic: "Subjunctive (be submitted)"
+        },
 
-            // --- Section 2: Find and correct the error (13–25) ---
+        // Level C1
+        { 
+            q: "16. The manager, for whom the staff held a great respect, retired unexpectedly.", 
+            options: ["for whom", "held", "a great respect", "retired unexpectedly"], 
+            correct: 2,
+            level: "C1",
+            topic: "C1 collocations (hold great respect → hold *in* great respect)"
+        },
+        { 
+            q: "17. Had they realised the risks, they would take additional precautions.", 
+            options: ["Had they realised", "the risks", "would take", "additional precautions"], 
+            correct: 2,
+            level: "C1",
+            topic: "Mixed conditional (would have taken)"
+        },
+        { 
+            q: "18. Being the conference postponed, several speakers cancelled their participation.", 
+            options: ["Being", "the conference", "postponed", "cancelled"], 
+            correct: 0,
+            level: "C1",
+            topic: "Incorrect reduced clause ('With the conference postponed')"
+        },
 
-            // Level A1
-            { 
-                q: "13. She go to the gym every morning.",
-                options: ["She", "go", "to the gym", "every morning"],
-                correct: 1,
-                level: "A1",
-                topic: "Present simple – subject–verb agreement"
-            },
+        // Level C2
+        { 
+            q: "19. The report, the most of which was rewritten, now reads more coherently.", 
+            options: ["the report", "the most of which", "was rewritten", "coherently"], 
+            correct: 1,
+            level: "C2",
+            topic: "Advanced relative clause ('most of which')"
+        },
+        { 
+            q: "20. Rarely the committee has issued such a strongly worded statement.", 
+            options: ["Rarely", "the committee", "has issued", "such a strongly worded statement"], 
+            correct: 1,
+            level: "C2",
+            topic: "Inversion after 'Rarely' → 'Rarely has the committee...'"
+        },
+        { 
+            q: "21. The professor insisted that each student hands in the assignment personally.", 
+            options: ["insisted", "that", "each student", "hands"], 
+            correct: 3,
+            level: "C2",
+            topic: "Subjunctive ('hand in')"
+        },
+        { 
+            q: "22. No sooner they had announced the results than the controversy began.", 
+            options: ["No sooner", "they had announced", "the results", "than"], 
+            correct: 1,
+            level: "C2",
+            topic: "Inversion after 'No sooner' (had they announced)"
+        },
+        { 
+            q: "23. The device, which battery lasts only a few hours, needs constant recharging.", 
+            options: ["The device", "which battery", "lasts only a few hours", "needs"], 
+            correct: 1,
+            level: "C2",
+            topic: "Relative possession ('whose battery')"
+        },
+        { 
+            q: "24. Were the conditions improved, many more applicants might have apply.", 
+            options: ["Were", "conditions improved", "many more applicants", "have apply"], 
+            correct: 3,
+            level: "C2",
+            topic: "Perfect infinitive ('have applied')"
+        },
+        { 
+            q: "25. Not only the plan failed, but it also generated additional problems.", 
+            options: ["Not only", "the plan failed", "but it also", "generated"], 
+            correct: 1,
+            level: "C2",
+            topic: "Inversion after 'Not only' (Not only did the plan fail...)"
+        }
+    ];
 
-            // Level A2
-            { 
-                q: "14. I don’t have some money with me.",
-                options: ["don’t", "have", "some", "money"],
-                correct: 2,
-                level: "A2",
-                topic: "Any/some in negatives"
-            },
-            { 
-                q: "15. He must to leave early today.",
-                options: ["He", "must", "to leave", "early today"],
-                correct: 2,
-                level: "A2",
-                topic: "Modal verbs"
-            },
-
-            // Level B1
-            { 
-                q: "16. Maria enjoyed to play tennis on weekends.",
-                options: ["Maria", "enjoyed", "to play", "on weekends"],
-                correct: 2,
-                level: "B1",
-                topic: "Gerunds vs infinitives"
-            },
-            { 
-                q: "17. They explained me the problem in detail.",
-                options: ["They", "explained me", "the problem", "in detail"],
-                correct: 1,
-                level: "B1",
-                topic: "Verb pattern (explain to someone)"
-            },
-            { 
-                q: "18. I didn’t saw him at the party last night.",
-                options: ["I", "didn’t", "saw", "at the party"],
-                correct: 2,
-                level: "B1",
-                topic: "Past tense with 'did'"
-            },
-
-            // Level B2
-            { 
-                q: "19. If she would study more, she could pass the exam.",
-                options: ["If", "she would study", "she could pass", "the exam"],
-                correct: 1,
-                level: "B2",
-                topic: "Conditional 2"
-            },
-            { 
-                q: "20. Neither the students nor the teacher were angry.",
-                options: ["Neither", "the students", "nor the teacher", "were angry"],
-                correct: 3,
-                level: "B2",
-                topic: "Neither…nor agreement"
-            },
-            { 
-                q: "21. The project having been finish, they all went home.",
-                options: ["The project", "having been", "finish", "they all went home"],
-                correct: 2,
-                level: "B2",
-                topic: "Past participles"
-            },
-
-            // Level C1
-            { 
-                q: "22. The article, which I read it yesterday, was very informative.",
-                options: ["The article", "which I read it", "yesterday", "was very informative"],
-                correct: 1,
-                level: "C1",
-                topic: "Avoiding redundant pronouns"
-            },
-            { 
-                q: "23. No sooner I had opened the door than it started raining.",
-                options: ["No sooner", "I had opened", "the door", "than it started raining"],
-                correct: 1,
-                level: "C1",
-                topic: "Inversion with 'No sooner'"
-            },
-
-            // Level C2
-            { 
-                q: "24. Were he not being so stubborn, the discussion would have ended earlier.",
-                options: ["Were", "he not being", "so stubborn", "would have ended"],
-                correct: 1,
-                level: "C2",
-                topic: "Inversion in hypothetical structures"
-            },
-            { 
-                q: "25. Hardly had she finished her speech that the audience applauded.",
-                options: ["Hardly", "had she finished", "her speech", "that"],
-                correct: 3,
-                level: "C2",
-                topic: "Hardly…when / No sooner…than"
-            }
-        ];
 
 
 
