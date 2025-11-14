@@ -260,7 +260,7 @@
   <script>
     const defaultConfig = {
       exam_title: "Examen de Conocimientos",
-      time_limit: "10",
+      time_limit: "20",
       primary_color: "#667eea",
       secondary_color: "#764ba2",
       background_color: "#ffffff",
@@ -452,7 +452,7 @@
 
     let currentQuestion = 0;
     let answers = new Array(25).fill(null);
-    let timeLeft = 600;
+    let timeLeft = 1200;
     let timerInterval;
     let startTime;
 
