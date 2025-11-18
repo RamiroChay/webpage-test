@@ -824,109 +824,131 @@
     }
 
     function finishExam() {
-      clearInterval(timerInterval);
+        clearInterval(timerInterval);
 
-      let grammarScore = 0;
-      let readingScore = 0;
-      let wrongAnswers = [];
+        let grammarScore = 0;
+        let readingScore = 0;
+        let wrongAnswers = [];
 
-      answers.forEach((answer, index) => {
-        const question = questions[index];
-        const isCorrect = (answer === question.correct);
+        answers.forEach((answer, index) => {
+            const question = questions[index];
+            const isCorrect = (answer === question.correct);
 
-        if (isCorrect) {
-          if (question.section === 'grammar') {
-            grammarScore++;
-          } else if (question.section === 'reading') {
-            readingScore++;
-          }
-        } else {
-          wrongAnswers.push({
-            number: index + 1,
-            question: question.q.replace(/<[^>]*>?/gm, ''), // Limpiar HTML de la pregunta
-            selected: answer !== null ? question.options[answer] : "No answered",
-            correct: question.options[question.correct],
-            topic: question.topic
-          });
-        }
-      });
+            if (isCorrect) {
+                if (question.section === 'grammar') {
+                    grammarScore++;
+                } else if (question.section === 'reading') {
+                    readingScore++;
+                }
+            } else {
+                wrongAnswers.push({
+                    number: index + 1,
+                    question: question.q.replace(/<[^>]*>?/gm, ''), // Limpiar HTML de la pregunta
+                    selected: answer !== null ? question.options[answer] : "No answered",
+                    correct: question.options[question.correct],
+                    topic: question.topic
+                });
+            }
+        });
 
-      const totalScore = grammarScore + readingScore;
+        const totalScore = grammarScore + readingScore;
 
-      // --- NUEVA LÓGICA DE PUNTUACIÓN ---
-      const grammarPercent = ((grammarScore / totalGrammarQs) * 100).toFixed(1);
-      const readingPercent = ((readingScore / totalReadingQs) * 100).toFixed(1);
+        // --- NUEVA LÓGICA DE PUNTUACIÓN ---
+        const grammarPercent = ((grammarScore / totalGrammarQs) * 100).toFixed(1);
+        const readingPercent = ((readingScore / totalReadingQs) * 100).toFixed(1);
 
-      // Calcular scores en base 6
-      const grammarScore6 = (grammarScore / totalGrammarQs) * 6;
-      const readingScore6 = (readingScore / totalReadingQs) * 6;
+        // Calcular scores en base 6
+        const grammarScore6 = (grammarScore / totalGrammarQs) * 6;
+        const readingScore6 = (readingScore / totalReadingQs) * 6;
 
-      // Calcular promedio final en base 6
-      const finalAverageScore6 = (grammarScore6 + readingScore6) / 2;
+        // Calcular promedio final en base 6
+        const finalAverageScore6 = (grammarScore6 + readingScore6) / 2;
 
-      // Determinar nivel CEFR (basado en el promedio final)
-      let cefrLevel = "";
-      if (finalAverageScore6 < 2.0) cefrLevel = "A1";
-      else if (finalAverageScore6 < 2.5) cefrLevel = "A2";
-      else if (finalAverageScore6 < 3.5) cefrLevel = "B1";
-      else if (finalAverageScore6 < 4.5) cefrLevel = "B2";
-      else if (finalAverageScore6 < 5.5) cefrLevel = "C1";
-      else cefrLevel = "C2";
-      // --- FIN NUEVA LÓGICA ---
+        // Determinar nivel CEFR (basado en el promedio final)
+        let cefrLevel = "";
+        if (finalAverageScore6 < 2.0) cefrLevel = "A1";
+        else if (finalAverageScore6 < 2.5) cefrLevel = "A2";
+        else if (finalAverageScore6 < 3.5) cefrLevel = "B1";
+        else if (finalAverageScore6 < 4.5) cefrLevel = "B2";
+        else if (finalAverageScore6 < 5.5) cefrLevel = "C1";
+        else cefrLevel = "C2";
+
+        // --- INICIO: CÁLCULO CEFR POR SECCIÓN (NUEVO) ---
+        // Se aplica la misma lógica de rangos al puntaje individual de cada sección
+        
+        let grammarCefr = "";
+        if (grammarScore6 < 2.0) grammarCefr = "A1";
+        else if (grammarScore6 < 2.5) grammarCefr = "A2";
+        else if (grammarScore6 < 3.5) grammarCefr = "B1";
+        else if (grammarScore6 < 4.5) grammarCefr = "B2";
+        else if (grammarScore6 < 5.5) grammarCefr = "C1";
+        else grammarCefr = "C2";
+
+        let readingCefr = "";
+        if (readingScore6 < 2.0) readingCefr = "A1";
+        else if (readingScore6 < 2.5) readingCefr = "A2";
+        else if (readingScore6 < 3.5) readingCefr = "B1";
+        else if (readingScore6 < 4.5) readingCefr = "B2";
+        else if (readingScore6 < 5.5) readingCefr = "C1";
+        else readingCefr = "C2";
+        // --- FIN: CÁLCULO CEFR POR SECCIÓN ---
+
+        // --- FIN NUEVA LÓGICA ---
 
 
-      const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-      const minutesTaken = Math.floor(timeTaken / 60);
-      const secondsTaken = timeTaken % 60;
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const minutesTaken = Math.floor(timeTaken / 60);
+        const secondsTaken = timeTaken % 60;
 
-      // --- Tabla de Desglose de Puntuación (MODIFICADA) ---
-      const resultsTable = `
+        // --- Tabla de Desglose de Puntuación (MODIFICADA) ---
+        // Se eliminó la columna "Correctas" y se añadió "Nivel CEFR"
+        const resultsTable = `
         <h3 style="text-align:left; margin-top:25px; color:#2d3748;">Desglose de Puntuación</h3>
         <table style="width:100%; border-collapse:collapse; margin-top:10px;">
-          <thead>
-            <tr style="background:#667eea; color:white;">
-              <th style="padding:10px; border:1px solid #ccc;">Sección</th>
-              <th style="padding:10px; border:1px solid #ccc;">Correctas</th>
-              <th style="padding:10px; border:1px solid #ccc;">%</th>
-              <th style="padding:10px; border:1px solid #ccc;">Score (sobre 6)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="text-align:center;">
-              <td style="padding:10px; border:1px solid #ccc; font-weight:600;">Grammar</td>
-              <td style="padding:10px; border:1px solid #ccc;">${grammarScore}/${totalGrammarQs}</td>
-              <td style="padding:10px; border:1px solid #ccc;">${grammarPercent}%</td>
-              <td style="padding:10px; border:1px solid #ccc;">${grammarScore6.toFixed(2)}</td>
-            </tr>
-            <tr style="text-align:center;">
-              <td style="padding:10px; border:1px solid #ccc; font-weight:600;">Reading</td>
-              <td style="padding:10px; border:1px solid #ccc;">${readingScore}/${totalReadingQs}</td>
-              <td style="padding:10px; border:1px solid #ccc;">${readingPercent}%</td>
-              <td style="padding:10px; border:1px solid #ccc;">${readingScore6.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
-      `;
-
-      // --- Tabla de Nivel CEFR (MODIFICADA) ---
-      const cefrTable = `
-        <h3 style="text-align:left; margin-top:30px; color:#2d3748;">Nivel General Estimado</h3>
-         <table style="width:100%; border-collapse:collapse; margin-top:10px;">
             <thead>
                 <tr style="background:#667eea; color:white;">
-                   <th style="padding:10px; border:1px solid #ccc;">Puntaje Promedio (sobre 6)</th>
-                   <th style="padding:10px; border:1px solid #ccc;">Nivel CEFR</th>
+                    <th style="padding:10px; border:1px solid #ccc;">Sección</th>
+                    <th style="padding:10px; border:1px solid #ccc;">%</th>
+                    <th style="padding:10px; border:1px solid #ccc;">Score (sobre 6)</th>
+                    <th style="padding:10px; border:1px solid #ccc;">Nivel CEFR</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="text-align:center; font-weight:600;">
-                   <td style="padding:10px; border:1px solid #ccc;">${finalAverageScore6.toFixed(2)}</td>
-                   <td style="padding:10px; border:1px solid #ccc;">${cefrLevel}</td>
+                <tr style="text-align:center;">
+                    <td style="padding:10px; border:1px solid #ccc; font-weight:600;">Grammar</td>
+                    <td style="padding:10px; border:1px solid #ccc;">${grammarPercent}%</td>
+                    <td style="padding:10px; border:1px solid #ccc;">${grammarScore6.toFixed(2)}</td>
+                    <td style="padding:10px; border:1px solid #ccc;">${grammarCefr}</td>
+                </tr>
+                <tr style="text-align:center;">
+                    <td style="padding:10px; border:1px solid #ccc; font-weight:600;">Reading</td>
+                    <td style="padding:10px; border:1px solid #ccc;">${readingPercent}%</td>
+                    <td style="padding:10px; border:1px solid #ccc;">${readingScore6.toFixed(2)}</td>
+                    <td style="padding:10px; border:1px solid #ccc;">${readingCefr}</td>
                 </tr>
             </tbody>
-         </table>
-      `;
+        </table>
+        `;
 
+        // --- Tabla de Nivel CEFR (MODIFICADA) ---
+        // (Esta tabla se mantiene igual, ya que muestra el promedio general)
+        const cefrTable = `
+        <h3 style="text-align:left; margin-top:30px; color:#2d3748;">Nivel General Estimado</h3>
+            <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+                <thead>
+                    <tr style="background:#667eea; color:white;">
+                        <th style="padding:10px; border:1px solid #ccc;">Puntaje Promedio (sobre 6)</th>
+                        <th style="padding:10px; border:1px solid #ccc;">Nivel CEFR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align:center; font-weight:600;">
+                        <td style="padding:10px; border:1px solid #ccc;">${finalAverageScore6.toFixed(2)}</td>
+                        <td style="padding:10px; border:1px solid #ccc;">${cefrLevel}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
 
       let wrongReport = "";
       if (wrongAnswers.length > 0) {
