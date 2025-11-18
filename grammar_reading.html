@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examen de Gramática y Lectura</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      width: 90%;
+      margin: 20px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 10px 0;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .timer {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .timer.warning {
+      color: #ff6b6b;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.3);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 15px;
+    }
+
+    .progress-fill {
+      background: white;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .question-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-left: 4px solid #667eea;
+    }
+
+    .reading-passage {
+        background: #f0f2f5;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #333;
+        border-left: 4px solid #764ba2;
+    }
+    .reading-passage h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: #764ba2;
+    }
+    .reading-passage p {
+        margin-bottom: 10px;
+    }
+     .reading-passage p:last-child {
+        margin-bottom: 0;
+    }
+    /* Estilo para los marcadores de inserción */
+    .reading-passage strong.marker {
+        font-weight: 900;
+        color: #e53e3e; /* Rojo para destacar */
+        background: #fff0f0;
+        padding: 2px 5px;
+        border-radius: 4px;
+    }
+
+    .question-number {
+      color: #667eea;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #2d3748;
+    }
+    /* Estilo para la oración a insertar */
+    .question-text i {
+        display: block;
+        font-style: italic;
+        background: #f0f2f5;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        color: #4a5568;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option:hover {
+      border-color: #667eea;
+      background: #f7fafc;
+      transform: translateX(5px);
+    }
+
+    .option.selected {
+      border-color: #667eea;
+      background: #edf2f7;
+      font-weight: 600;
+    }
+
+    .option-letter {
+      background: #667eea;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .option.selected .option-letter {
+      background: #764ba2;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #2d3748;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e0;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .results {
+      text-align: center;
+      padding: 40px 30px;
+    }
+
+    .score {
+      font-size: 72px;
+      font-weight: 700;
+      color: #667eea;
+      margin: 20px 0;
+    }
+
+    .results h2 {
+      color: #2d3748;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .results h3 {
+        margin-top: 30px;
+        color: #2d3748;
+        font-size: 24px;
+        text-align: left;
+    }
+
+    .results p {
+      color: #718096;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .restart-btn {
+      margin-top: 30px;
+      padding: 15px 40px;
+      font-size: 18px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn/tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <div class="header">
+    <h1 id="exam-title">Examen de Gramática y Lectura</h1>
+    <div class="timer" id="timer">
+     10:00
+    </div>
+    <div class="progress-bar">
+     <div class="progress-fill" id="progress"></div>
+    </div>
+   </div>
+   <div class="content" id="exam-content">
+    <div class="question-card">
+     <div class="question-number" id="question-number">
+      Pregunta 1 de 35
+     </div>
+     <div class="reading-passage" id="reading-passage" style="display:none;"></div>
+     
+     <div class="question-text" id="question-text"></div>
+     <div class="options" id="options"></div>
+    </div>
+    <div class="navigation"><button class="btn btn-secondary" id="prev-btn" onclick="previousQuestion()">← Anterior</button> <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Siguiente →</button>
+    </div>
+   </div>
+   <div class="results hidden" id="results">
+    <h2>¡Examen Completado!</h2>
+    <div class="score" id="final-score">
+     0/35
+    </div>
+    <p id="percentage"></p>
+    <p id="time-taken"></p><button class="btn btn-primary restart-btn" onclick="restartExam()">Reiniciar Examen</button>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      exam_title: "Examen de Gramática y Lectura",
+      time_limit: "10",
+      primary_color: "#667eea",
+      secondary_color: "#764ba2",
+      background_color: "#ffffff",
+      text_color: "#2d3748",
+      accent_color: "#f8f9fa"
+    };
+
+    const passages = {
+        1: `<h4>The Wonder of Trees</h4>
+            <p>An oft-quoted American poem begins “I think that I shall never see a poem as lovely as a 
+    tree.” Most of us take little notice of the wonder of trees, but they offer us great beauty 
+    and play an important ecological role in the "biosphere," the interconnected web of life 
+    on Earth. To imagine a world without trees would be to imagine a very different, drab, 
+    and possibly lifeless, planet.</p>
+            <p>Ecologically, trees have been an important part of our natural environment since 
+    evolving out of plant life about 370 million years ago. Their life-sustaining functions were 
+    essential to the further evolution of life on Earth. Trees produce oxygen and absorb 
+    carbon dioxide, thus maintaining our atmosphere. They also regulate climate, direct and 
+    regulate the flow of water, build and conserve soil, and provide habitat for wildlife.</p>
+            <p>But the great contribution of trees to the beauty of our planet is also worth remarking. 
+    The variety and abundance of trees make Earth a planet of brilliant green that 
+    complements the blue of the oceans. The two main varieties of trees, “deciduous” and 
+    “evergreen,” contribute to this beauty in different ways. Deciduous trees shed their 
+    leaves for part of the year. Evergreens stay green all year long.</p>
+            <p>The lushness of Earth is also a result of the abundance and staying power of trees. There 
+    are estimated to be approximately 100,000 species of trees today. Most of them are in 
+    the tropics. The Amazon Rainforest alone is home to thousands of tree species. Trees can 
+    live for thousands of years and grow quite large. A tree in Sweden is considered the 
+    oldest, at over 9,500 years of age. The tallest tree in the world is thought to be a Giant 
+    Sequoia in California's Redwood Forest. It stands over 117 meters tall with a diameter of 
+    about 10 meters.</p>`,
+        2: `<h4>Homing Pigeons</h4>
+            <p>The homing pigeon is a variety of domestic pigeon capable of finding its way 
+    home over extremely long distances. This species of pigeon can fly distances of 
+    one thousand miles to return to its own nest, making it extremely reliable for 
+    carrying messages.</p>
+            <p>The practice of using pigeons to carry messages goes back over 3000 years. 
+    When these pigeons were used as ‘carrier pigeons’, they carried small messages 
+    written on light, thin paper that was rolled into a small tube and attached to the 
+    leg of the bird.</p>
+            <p>One of the earliest recorded instances of carrier pigeons was when they were 
+    used to relay the results of the original Olympic Games in ancient Greece. 
+    Records show they may have been used even earlier than that in Egypt and 
+    Persia.  When the outcome of the Battle of Waterloo was decided the news was 
+    first delivered by a pigeon, and in 1860 Reuters, founder of the Reuters News 
+    Service, used a fleet of 45 pigeons to carry news messages. As recently as the 
+    early 20th Century pigeons were used prominently in World War I and one was 
+    even awarded a medal for delivering vital messages despite being badly injured.</p>
+            <p>It is the carrier pigeons’ natural instincts, combined with their special 
+    navigational abilities that make them uniquely qualified to serve as dependable 
+    messengers. The birds rely upon a combination of methods to orient themselves 
+    and return to their homes, including using what is called a ‘map and compass’ 
+    system.  Relying on the sun, a pigeon may locate itself using an innate compass 
+    and direct itself to its ‘home site’. Pigeons can only, however, return to one place 
+    that they recognize as home. Thus to have an effective ‘mail’ system, one would 
+    need a stock of pigeons separated from their home, and they would only be 
+    capable of delivering ‘mail’ to that single location.</p>
+            <p>In addition to gauging its position by the sun, a carrier pigeon may also use 
+    ‘olfactory’ navigation, detecting the spatial distribution of atmospheric odors, as 
+    well as visual landmarks that guide them as they near their homes.  Some 
+    research has even shown that homing pigeons navigate by following roads, 
+    avenues and structures, essentially guiding themselves in the same way that 
+    people do.</p>
+            <p>Certain bird experts, however, were not satisfied that the carrier pigeons only 
+    used superior sight and smell to find their way. University researchers tested an 
+    alternate theory, that the birds can actually detect the Earth’s magnetic field. In 
+    testing their hypothesis, the researchers discovered that certain pigeon breeds 
+    were confused by magnetic irregularities in the Earth’s atmosphere, while others 
+    were not affected.</p>
+            <p>In this century, however, the use of homing pigeons has practically disappeared, 
+    as they have been rendered obsolete by the spread of digital technology. They 
+    were last utilized in certain relief areas when natural disasters had dismantled 
+    communications infrastructure. But as more and more areas become populated 
+    the need for an older, though reliable, messenger service has vanished.</p>`,
+        3: `<h4>Taxonomy and Scientific Knowledge</h4>
+            <p>Most people think of science as a set of facts about the world. But more 
+    fundamental to science than the facts are the methods. In fact, many theorists 
+    believe that it is not objective reality that steers science, but rather the method 
+    of science that determines what we come to know as real. This reversal of what 
+    is commonly thought is exemplified by the development of taxonomy, the 
+    method of identifying and classifying organisms. Modern taxonomy, primarily 
+    developed by Carolus Linnaeus in the 18th Century, initially gave scientists a 
+    greater and more precise knowledge of nature. Today, however, taxonomic 
+    advances have led scientists to question what they thought they knew about 
+    basic biological reality.</p>
+            <p>Taxonomy has been in use since Aristotle's work in the fourth century B.C.E. But 
+    early taxonomies were not very scientific. Many contained such mythological 
+    creatures as griffins, right alongside existing animals. Further, it was thought 
+    that offspring could be produced by mating completely different creatures, like a 
+    lion and a bird. <strong class="marker">*A</strong> Aristotle, himself, used reason, rather than observation, to 
+    divide animal life into two basic groups: animals with vertebrae (or backbones), 
+    and those without. Although this system proved inaccurate, it wasn't until 
+    Linnaeus' work that empirical observation became the basis for a modern 
+    taxonomy that excluded creatures of fantasy.</p>
+            <p>The movement toward a more modern system took its first big step in the 17th 
+    Century, with naturalist John Ray's definition of the concept “species.” A species 
+    is a group of organisms capable of reproduction. The result will be an individual 
+    similar to the parents and also capable of reproducing.<strong class="marker">*B</strong> Armed with this 
+    definition, Linnaeus was able to catalog over 4,000 species of animals and over 
+    7,500 species of plants. He began with plant-life, dividing plants into species 
+    based on the number of pistils and stamens (the sexual organs) of each plant. 
+    This method allowed other botanists to contribute to the taxonomy.<strong class="marker">*C</strong> They 
+    simply had to observe and count, and a new specimen was added. Thus, 
+    biological knowledge grew tremendously.</p>
+            <p>However, since Linnaeus' time, biology has developed new taxonomic systems. 
+    One such example, cladistics, makes use of genetic analysis to classify organisms 
+    based on evolutionary descent (parent and child), rather than observable 
+    features. The problem is that this system has revealed relationships that are 
+    quite different from those of Linnaeun taxonomy.<strong class="marker">*D</strong> Furthermore, organisms 
+    have been discovered that violate the rules of species inclusion. An example is 
+    where one organism may be able to reproduce with another, while that other 
+    one is capable of reproducing with a third, but the first and third cannot 
+    reproduce with each other. These and other surprises have scientists today 
+    questioning whether we understand species at all. Do species actually exist in 
+    nature, or only in our taxonomies? Perhaps this question will lead to new 
+    methods and technologies that will, in turn, radically change the nature of 
+    reality as we know it.</p>`
+    };
+
+
+    const questions = [
+        // --- Section 1: Grammar (1–25) ---
+        { 
+            q: "1. Her mother's cooking was much __________ than what was served in the cafeteria.", 
+            options: ["most delicious", "more delicious", "more tastefully", "tastiest"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Comparative adjectives",
+            section: "grammar"
+        },
+        { 
+            q: "2. If I __________ able to go to the play, she would not have had to drive her car.", 
+            options: ["had been", "was", "have been", "am going to be"], 
+            correct: 0, 
+            level: "B2",
+            topic: "Third conditional",
+            section: "grammar"
+        },
+        { 
+            q: "3. Every one of the examinees ___________ given a free subscription to the magazine.", 
+            options: ["are", "were", "are going to be", "has been"], 
+            correct: 3, 
+            level: "B2",
+            topic: "Subject–verb agreement (Every one)",
+            section: "grammar"
+        },
+        { 
+            q: "4. __________ it was cold and raining outside, the children wanted to go to the park.", 
+            options: ["Despite", "Although", "However", "It is true"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Conjunctions of contrast",
+            section: "grammar"
+        },
+        { 
+            q: "5. If you eat your dinner too _______, you could end up with a stomach ache.", 
+            options: ["lately", "much", "quickly", "fast"], 
+            correct: 2, 
+            level: "A2",
+            topic: "Adverbs of manner",
+            section: "grammar"
+        },
+        { 
+            q: "6. No sooner had Misaki begun to read her book, __________her phone started to ring.", 
+            options: ["and then", "meanwhile", "but", "than"], 
+            correct: 3, 
+            level: "C1",
+            topic: "Inversion (No sooner... than)",
+            section: "grammar"
+        },
+        { 
+            q: "7. When I have little time to spare, I choose to read a few poems or a short story_________ a long work of fiction.", 
+            options: ["even though", "in spite of", "rather than", "to reading"], 
+            correct: 2, 
+            level: "B2",
+            topic: "Connectors (rather than)",
+            section: "grammar"
+        },
+        { 
+            q: "8. He left the shopping center to go home as ___________he ran out of money.", 
+            options: ["the time came", "soon as", "when", "well as"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Time conjunctions (as soon as)",
+            section: "grammar"
+        },
+        { 
+            q: "9. Professor Hillman__________ campus suddenly this morning, so this afternoon's class is cancelled.", 
+            options: ["had to leave", "have to leave", "was left", "had left"], 
+            correct: 0, 
+            level: "B1",
+            topic: "Modal of necessity (past)",
+            section: "grammar"
+        },
+        { 
+            q: "10. I think it would be better if we could keep this information just between __________.", 
+            options: ["we ourselves", "you and I", "you and me", "each other"], 
+            correct: 2, 
+            level: "A2",
+            topic: "Object pronouns",
+            section: "grammar"
+        },
+        { 
+            q: "11. When he first entered the classroom no one knew ______ he was.", 
+            options: ["whom", "who", "whoever", "whomever"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Interrogative pronouns (who vs whom)",
+            section: "grammar"
+        },
+        { 
+            q: "12. __________ of the math problems on last night's assignment were you able to solve?", 
+            options: ["How much", "How many", "If any", "Were any"], 
+            correct: 1, 
+            level: "A2",
+            topic: "Quantifiers (countable)",
+            section: "grammar"
+        },
+        { 
+            q: "13. Better known as the father of modern philosophy, the work of Rene Descartes also contributed to the field of mathematics.", 
+            options: ["Better known", "the work of", "also", "the field of"], 
+            correct: 1, 
+            level: "C1",
+            topic: "Error ID (Dangling modifier)",
+            section: "grammar"
+        },
+        { 
+            q: "14. Devon no longer has the book that the teacher had given him because he was leaving it in the library.", 
+            options: ["has", "had given", "was leaving", "in"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Error ID (Verb tense)",
+            section: "grammar"
+        },
+        { 
+            q: "15. Dressed in her best suit and with a confident smile, Emily is sure to make a good impression being at the job interview.", 
+            options: ["her best", "with", "to make", "being"], 
+            correct: 3, 
+            level: "B2",
+            topic: "Error ID (Preposition/Gerund)",
+            section: "grammar"
+        },
+        { 
+            q: "16. It was him who first asked the question that started the debate about whether their actions were justified.", 
+            options: ["him", "who", "that", "whether"], 
+            correct: 0, 
+            level: "B2",
+            topic: "Error ID (Pronoun case)",
+            section: "grammar"
+        },
+        { 
+            q: "17. Today's lecture in Economics class was mainly about the constant changing conditions in global energy markets.", 
+            options: ["Today's", "mainly", "constant", "global"], 
+            correct: 2, 
+            level: "B2",
+            topic: "Error ID (Adjective/Adverb)",
+            section: "grammar"
+        },
+        { 
+            q: "18. I was planning to attend the party, but then I had remembered that Sylvia's jazz concert was being held on the same night.", 
+            options: ["was planning", "to attend", "had remembered", "was being"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Error ID (Verb tense)",
+            section: "grammar"
+        },
+        { 
+            q: "19. One of Van Gogh's paintings from his famous sunflower series were recently sold at auction for an unprecedented sum of money.", 
+            options: ["from", "were", "sold", "for"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Error ID (Subject-verb agreement)",
+            section: "grammar"
+        },
+        { 
+            q: "20. The findings, far from being conclusive, ___ more questions than answers.", 
+            options: ["have raised", "had risen", "rose", "raised up"], 
+            correct: 0, 
+            level: "B2",
+            topic: "Transitive verbs (raise vs rise)",
+            section: "grammar"
+        },
+        { 
+            q: "21. Most of the specimens in the lab have been carefully prepared by any test-taker.", 
+            options: ["in", "have been", "prepared", "any"], 
+            correct: 3, 
+            level: "B2",
+            topic: "Error ID (Determiners)",
+            section: "grammar"
+        },
+        { 
+            q: "22. It was the substitute teacher to which she gave her report.", 
+            options: ["It", "the", "which", "her"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Error ID (Relative pronouns)",
+            section: "grammar"
+        },
+        { 
+            q: "23. All of the examinees accept Raul, will be coming to the party.", 
+            options: ["the", "accept", "coming", "to"], 
+            correct: 1, 
+            level: "A2",
+            topic: "Error ID (Word choice/Spelling)",
+            section: "grammar"
+        },
+        { 
+            q: "24. The dromedary, that is native to the desert areas of west Asia, has only one hump.", 
+            options: ["that", "to", "desert", "has"], 
+            correct: 0, 
+            level: "B1",
+            topic: "Error ID (Relative clauses)",
+            section: "grammar"
+        },
+        { 
+            q: "25. The vegetarian restaurant along the street behind the coffee shop serves delicious food for a very reasonable price.", 
+            options: ["along", "behind", "delicious", "for"], 
+            correct: 3, 
+            level: "B1",
+            topic: "Error ID (Prepositions)",
+            section: "grammar"
+        },
+
+        // --- Section 2: Reading - Texto 1 (26–29) ---
+        { 
+            q: "26. What is one major ecological function trees perform?", 
+            options: ["They reduce the amount of oxygen in the air", "They absorb carbon dioxide and produce oxygen", "They prevent oceans from forming", "They stop animals from creating habitats"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Reading Comprehension (Detail)",
+            section: "reading",
+            passage_id: 1
+        },
+        { 
+            q: "27. What is the main difference between deciduous and evergreen trees?", 
+            options: ["Deciduous trees grow only in rainforests", "Evergreens shed their leaves in summer", "Deciduous trees lose their leaves part of the year, while evergreens stay green all year", "Evergreens live longer than deciduous trees"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Reading Comprehension (Detail)",
+            section: "reading",
+            passage_id: 1
+        },
+        { 
+            q: "28. Why does the text mention the Amazon Rainforest?", 
+            options: ["To explain why the rainforest is disappearing", "To show that trees cannot survive outside the tropics", "To highlight that many tree species live there", "To describe the origin of deciduous trees"], 
+            correct: 2, 
+            level: "B1",
+            topic: "Reading Comprehension (Inference)",
+            section: "reading",
+            passage_id: 1
+        },
+        { 
+            q: "29. In the text, what does the word 'drab' most likely imply about a world without trees?", 
+            options: ["It would be bright and colorful", "It would be dull or colorless", "It would be full of wildlife", "It would be warmer and more tropical"], 
+            correct: 1, 
+            level: "B1",
+            topic: "Reading Comprehension (Vocabulary)",
+            section: "reading",
+            passage_id: 1
+        },
+
+        // --- Section 3: Reading - Texto 2 (30–35) ---
+        { 
+            q: "30. The word 'innate' as used in the passage probably means:", 
+            options: ["Evolutionary", "Instinctive", "Preternatural", "Flying"], 
+            correct: 1, 
+            level: "B2",
+            topic: "Reading Comprehension (Vocabulary)",
+            section: "reading",
+            passage_id: 2
+        },
+        { 
+            q: "31. The passage mentions the 'single' location in paragraph 4 to emphasize:", 
+            options: ["Pigeons mate for life", "The limitations of pigeon mail", "The effect of sunlight on pigeons’ navigation", "The effect of the magnetic field on pigeons’ navigation"], 
+            correct: 1, 
+            level: "B2",
+            topic: "Reading Comprehension (Purpose)",
+            section: "reading",
+            passage_id: 2
+        },
+        { 
+            q: "32. It can be concluded from the passage that:", 
+            options: ["Not all carrier pigeons can detect the Earth’s magnetic field", "All pigeon species can carry messages", "Pigeons have more than one nest", "The field of carrier pigeon research has recently expanded"], 
+            correct: 0, 
+            level: "B2",
+            topic: "Reading Comprehension (Conclusion)",
+            section: "reading",
+            passage_id: 2
+        },
+        { 
+            q: "33. It can be understood from the passage that the idea of 'homing':", 
+            options: ["Can refer to all bird species", "Relies only on 'olfactory' senses", "Is an important quality of certain pigeon species", "Was first introduced in Ancient Greece"], 
+            correct: 2, 
+            level: "B2",
+            topic: "Reading Comprehension (Inference)",
+            section: "reading",
+            passage_id: 2
+        },
+        { 
+            q: "34. What is the purpose of mentioning Egypt and Persia in paragraph 3?", 
+            options: ["To demonstrate the great distances that pigeons can fly", "To show places where pigeons have been used by armies", "To illustrate how the use of carrier pigeons has changed", "To give an example of earliest uses of carrier pigeons"], 
+            correct: 3, 
+            level: "B1",
+            topic: "Reading Comprehension (Purpose)",
+            section: "reading",
+            passage_id: 2
+        },
+        
+        // --- Section 4: Reading - Texto 3 (36) ---
+        { 
+            q: "35. After reading the passage, insert the new sentence in the passage where it makes sense. <i>Thus, a horse and a donkey, although appearing similar, are not the same species, since their mating leads to a sterile animal, the mule.</i>", 
+            options: ["A", "B", "C", "D"], 
+            correct: 1, // Encaja después de la definición de 'species'.
+            level: "C1",
+            topic: "Reading Comprehension (Text Insertion)",
+            section: "reading",
+            passage_id: 3
+        }
+    ];
+
+
+
+    let currentQuestion = 0;
+    let answers = new Array(35).fill(null);
+    let timeLeft = 600;
+    let timerInterval;
+    let startTime;
+    const totalQuestions = 35;
+    const totalGrammarQs = 25;
+    const totalReadingQs = 10;
+
+    function renderQuestion() {
+      const question = questions[currentQuestion];
+      const passageEl = document.getElementById('reading-passage');
+
+      if (question.passage_id && passages[question.passage_id]) {
+          passageEl.innerHTML = passages[question.passage_id];
+          passageEl.style.display = 'block';
+      } else {
+          passageEl.style.display = 'none';
+      }
+
+      document.getElementById('question-number').textContent = `Pregunta ${currentQuestion + 1} de ${totalQuestions}`;
+      document.getElementById('question-text').innerHTML = question.q; // Usar .innerHTML para renderizar <i>
+      
+      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+      
+      question.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option' + (answers[currentQuestion] === index ? ' selected' : '');
+        optionDiv.onclick = () => selectOption(index);
+        
+        const letter = String.fromCharCode(65 + index);
+        optionDiv.innerHTML = `
+          <div class="option-letter">${letter}</div>
+          <div>${option}</div>
+        `;
+        
+        optionsContainer.appendChild(optionDiv);
+      });
+      
+      document.getElementById('prev-btn').disabled = currentQuestion === 0;
+      document.getElementById('next-btn').textContent = currentQuestion === totalQuestions - 1 ? 'Finalizar' : 'Siguiente →';
+      
+      updateProgress();
+    }
+
+    function selectOption(index) {
+      answers[currentQuestion] = index;
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < totalQuestions - 1) {
+        currentQuestion++;
+        renderQuestion();
+      } else {
+        finishExam();
+      }
+    }
+
+    function previousQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    }
+
+    function updateProgress() {
+      const answered = answers.filter(a => a !== null).length;
+      const percentage = (answered / totalQuestions) * 100;
+      document.getElementById('progress').style.width = percentage + '%';
+    }
+
+    function updateTimer() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      const timerElement = document.getElementById('timer');
+      timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      
+      if (timeLeft <= 60) {
+        timerElement.classList.add('warning');
+      }
+      
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        finishExam();
+      }
+      
+      timeLeft--;
+    }
+
+    function finishExam() {
+      clearInterval(timerInterval);
+
+      let grammarScore = 0;
+      let readingScore = 0;
+      let wrongAnswers = [];
+
+      answers.forEach((answer, index) => {
+        const question = questions[index];
+        const isCorrect = (answer === question.correct);
+
+        if (isCorrect) {
+          if (question.section === 'grammar') {
+            grammarScore++;
+          } else if (question.section === 'reading') {
+            readingScore++;
+          }
+        } else {
+          wrongAnswers.push({
+            number: index + 1,
+            question: question.q.replace(/<[^>]*>?/gm, ''), // Limpiar HTML de la pregunta
+            selected: answer !== null ? question.options[answer] : "No answered",
+            correct: question.options[question.correct],
+            topic: question.topic
+          });
+        }
+      });
+
+      const totalScore = grammarScore + readingScore;
+
+      // --- NUEVA LÓGICA DE PUNTUACIÓN ---
+      const grammarPercent = ((grammarScore / totalGrammarQs) * 100).toFixed(1);
+      const readingPercent = ((readingScore / totalReadingQs) * 100).toFixed(1);
+
+      // Calcular scores en base 6
+      const grammarScore6 = (grammarScore / totalGrammarQs) * 6;
+      const readingScore6 = (readingScore / totalReadingQs) * 6;
+
+      // Calcular promedio final en base 6
+      const finalAverageScore6 = (grammarScore6 + readingScore6) / 2;
+
+      // Determinar nivel CEFR (basado en el promedio final)
+      let cefrLevel = "";
+      if (finalAverageScore6 < 2.0) cefrLevel = "A1";
+      else if (finalAverageScore6 < 2.5) cefrLevel = "A2";
+      else if (finalAverageScore6 < 3.5) cefrLevel = "B1";
+      else if (finalAverageScore6 < 4.5) cefrLevel = "B2";
+      else if (finalAverageScore6 < 5.5) cefrLevel = "C1";
+      else cefrLevel = "C2";
+      // --- FIN NUEVA LÓGICA ---
+
+
+      const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+      const minutesTaken = Math.floor(timeTaken / 60);
+      const secondsTaken = timeTaken % 60;
+
+      // --- Tabla de Desglose de Puntuación (MODIFICADA) ---
+      const resultsTable = `
+        <h3 style="text-align:left; margin-top:25px; color:#2d3748;">Desglose de Puntuación</h3>
+        <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+          <thead>
+            <tr style="background:#667eea; color:white;">
+              <th style="padding:10px; border:1px solid #ccc;">Sección</th>
+              <th style="padding:10px; border:1px solid #ccc;">Correctas</th>
+              <th style="padding:10px; border:1px solid #ccc;">%</th>
+              <th style="padding:10px; border:1px solid #ccc;">Score (sobre 6)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="text-align:center;">
+              <td style="padding:10px; border:1px solid #ccc; font-weight:600;">Grammar</td>
+              <td style="padding:10px; border:1px solid #ccc;">${grammarScore}/${totalGrammarQs}</td>
+              <td style="padding:10px; border:1px solid #ccc;">${grammarPercent}%</td>
+              <td style="padding:10px; border:1px solid #ccc;">${grammarScore6.toFixed(2)}</td>
+            </tr>
+            <tr style="text-align:center;">
+              <td style="padding:10px; border:1px solid #ccc; font-weight:600;">Reading</td>
+              <td style="padding:10px; border:1px solid #ccc;">${readingScore}/${totalReadingQs}</td>
+              <td style="padding:10px; border:1px solid #ccc;">${readingPercent}%</td>
+              <td style="padding:10px; border:1px solid #ccc;">${readingScore6.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+
+      // --- Tabla de Nivel CEFR (MODIFICADA) ---
+      const cefrTable = `
+        <h3 style="text-align:left; margin-top:30px; color:#2d3748;">Nivel General Estimado</h3>
+         <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+            <thead>
+                <tr style="background:#667eea; color:white;">
+                   <th style="padding:10px; border:1px solid #ccc;">Puntaje Promedio (sobre 6)</th>
+                   <th style="padding:10px; border:1px solid #ccc;">Nivel CEFR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center; font-weight:600;">
+                   <td style="padding:10px; border:1px solid #ccc;">${finalAverageScore6.toFixed(2)}</td>
+                   <td style="padding:10px; border:1px solid #ccc;">${cefrLevel}</td>
+                </tr>
+            </tbody>
+         </table>
+      `;
+
+
+      let wrongReport = "";
+      if (wrongAnswers.length > 0) {
+        wrongReport += `
+          <h3 style="text-align:left; margin-top:30px; color:#2d3748;">Errores en tus respuestas</h3>
+          <table style="width:100%; border-collapse:collapse; margin-top:10px; font-size:14px;">
+            <thead>
+              <tr style="background:#f3f4f6;">
+                <th style="border:1px solid #ccc; padding:6px;">#</th>
+                <th style="border:1px solid #ccc; padding:6px;">Pregunta</th>
+                <th style="border:1px solid #ccc; padding:6px;">Tu respuesta</th>
+                <th style="border:1px solid #ccc; padding:6px;">Correcta</th>
+                <th style="border:1px solid #ccc; padding:6px;">topic</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${wrongAnswers
+                .map(
+                  (w) => `
+                  <tr>
+                    <td style="border:1px solid #ccc; padding:6px; text-align:center;">${w.number}</td>
+                    <td style="border:1px solid #ccc; padding:6px;">${w.question}</td>
+                    <td style="border:1px solid #ccc; padding:6px; color:#e53e3e;">${w.selected}</td>
+                    <td style="border:1px solid #ccc; padding:6px; color:#2f855a;">${w.correct}</td>
+                    <td style="border:1px solid #ccc; padding:6px; text-align:center;">${w.topic}</td>
+                  </tr>
+                `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        `;
+      } else {
+        wrongReport = `<p style="color:#2f855a; margin-top:20px;">¡Excelente! Todas tus respuestas fueron correctas 🎉</p>`;
+      }
+
+      document.getElementById("exam-content").classList.add("hidden");
+      document.getElementById("results").classList.remove("hidden");
+      document.getElementById("results").innerHTML = `
+        <h2>Reporte de Resultados</h2>
+        <div class="score">${totalScore}/${totalQuestions}</div>
+        <p id="time-taken">Tiempo: ${minutesTaken}:${secondsTaken.toString().padStart(2, "0")}</p>
+        ${resultsTable}
+        ${cefrTable}
+        <button class="btn btn-primary restart-btn" onclick="restartExam()">Reiniciar Examen</button>
+        ${wrongReport}
+      `;
+    }
+
+
+
+    function restartExam() {
+      currentQuestion = 0;
+      answers = new Array(totalQuestions).fill(null);
+      timeLeft = parseInt(window.elementSdk?.config?.time_limit || defaultConfig.time_limit) * 60;
+      startTime = Date.now();
+      
+      document.getElementById('exam-content').classList.remove('hidden');
+      document.getElementById('results').classList.add('hidden');
+      document.getElementById('timer').classList.remove('warning');
+      
+      renderQuestion();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+      updateTimer();
+    }
+
+    async function onConfigChange(config) {
+      const examTitle = config.exam_title || defaultConfig.exam_title;
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      
+      document.getElementById('exam-title').textContent = examTitle;
+      
+      const header = document.querySelector('.header');
+      header.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+      
+      document.body.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
+      
+      const container = document.querySelector('.container');
+      container.style.background = backgroundColor;
+      
+      const questionTexts = document.querySelectorAll('.question-text, .results h2, .results h3');
+      questionTexts.forEach(el => el.style.color = textColor);
+      
+      const buttons = document.querySelectorAll('.btn-primary');
+      buttons.forEach(btn => {
+        btn.style.background = primaryColor;
+      });
+      
+      const optionLetters = document.querySelectorAll('.option-letter');
+      optionLetters.forEach(letter => {
+        letter.style.background = primaryColor;
+      });
+      
+      const selectedOptions = document.querySelectorAll('.option.selected .option-letter');
+      selectedOptions.forEach(letter => {
+        letter.style.background = secondaryColor;
+      });
+      
+      const score = document.getElementById('final-score');
+      if (score) {
+        score.style.color = primaryColor;
+      }
+
+      document.querySelectorAll('.results table th').forEach(th => {
+            th.style.background = primaryColor;
+        });
+
+         document.querySelectorAll('.reading-passage').forEach(passage => {
+            passage.style.borderColor = secondaryColor;
+        });
+         document.querySelectorAll('.reading-passage h4').forEach(h4 => {
+            h4.style.color = secondaryColor;
+        });
+    }
+
+   if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["exam_title", config.exam_title || defaultConfig.exam_title],
+          ["time_limit", config.time_limit || defaultConfig.time_limit]
+        ])
+      });
+    }
+
+    startTime = Date.now();
+    renderQuestion();
+    timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ca227485e5a4eb',t:'MTc2MjgyNTc4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
